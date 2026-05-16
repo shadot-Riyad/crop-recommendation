@@ -12,6 +12,10 @@ except FileNotFoundError:
 # ওয়েবসাইটের ইন্টারফেস ডিজাইন
 st.set_page_config(page_title="Crop Recommendation System", page_icon="🌾", layout="centered")
 
+# --- টিম নাম (Team Name) সেকশন ---
+st.markdown("<p style='text-align: center; color: gray; font-size: 14px; margin-bottom: 0px;'>Created By</p>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center; color: #4CAF50; margin-top: 0px; margin-bottom: 20px;'>Group 7</h3>", unsafe_allow_html=True)
+
 st.title("🌾 Crop Recommendation System")
 st.write("আপনার মাটির ও আবহাওয়ার উপাদানগুলোর মান স্লাইডারের সাহায্যে সিলেক্ট করুন এবং সঠিক ফসল জেনে নিন।")
 st.markdown("---")
@@ -40,50 +44,42 @@ if st.button("Recommend the Best Crop 🎯", use_container_width=True):
         
         # মডেল থেকে প্রেডিকশন নেওয়া
         prediction = model.predict(input_data)
-        prediction_id = int(prediction[0]) # সংখ্যাটিকে পূর্ণসংখ্যায় রূপান্তর করা হলো
+        prediction_id = int(prediction[0])
         
-        # ৪. আপনার আপলোড করা ডেটাসেট অনুযায়ী ১০০% সঠিক ক্রপ ডিকশনারি
+        # লাইভ কনফিডেন্স (সম্ভাব্যতা) বের করা
+        probabilities = model.predict_proba(input_data)
+        confidence_score = np.max(probabilities) * 100 
+        
+        # ৪. আপনার ডেটাসেট অনুযায়ী ক্রপ ডিকশনারি
         crop_dict = {
-            0: 'Banana (কলা)',
-            1: 'Barley (বার্লি/যব)',
-            2: 'Bitter Gourd (করলা)',
-            3: 'Brinjal (বেগুন)',
-            4: 'Cabbage (বাধাকপি)',
-            5: 'Cauliflower (ফুলকপি)',
-            6: 'Chili (মরিচ)',
-            7: 'Coriander (ধনেপাতা)',
-            8: 'Garlic (রসুন)',
-            9: 'Ginger (আদা)',
-            10: 'Jute (পাট)',
-            11: 'Lentil (মসুর ডাল)',
-            12: 'Maize (ভুট্টা)',
-            13: 'Mustard (সরিষা)',
-            14: 'Okra (ঢেঁড়স)',
-            15: 'Onion (পেঁয়াজ)',
-            16: 'Papaya (পেঁপে)',
-            17: 'Potato (আলু)',
-            18: 'Pumpkin (কুমড়া)',
-            19: 'Radish (মুলা)',
-            20: 'Rice (ধান)',
-            21: 'Ridge Gourd (ঝিংগা)',
-            22: 'Spinach (পালং শাক)',
-            23: 'Sugarcane (আখ)',
-            24: 'Sweet Gourd (মিষ্টি কুমড়া)',
-            25: 'Tea (চা)',
-            26: 'Tomato (টমেটো)',
-            27: 'Turnip (শালগম)',
-            28: 'Watermelon (তরমুজ)',
-            29: 'Wheat (গম)'
+            0: 'Banana (কলা)', 1: 'Barley (বার্লি/যব)', 2: 'Bitter Gourd (করলা)', 3: 'Brinjal (বেগুন)',
+            4: 'Cabbage (বাধাকপি)', 5: 'Cauliflower (ফুলকপি)', 6: 'Chili (মরিচ)', 7: 'Coriander (ধনেপাতা)',
+            8: 'Garlic (রসুন)', 9: 'Ginger (আদা)', 10: 'Jute (পাট)', 11: 'Lentil (মসুর ডাল)',
+            12: 'Maize (ভুট্টা)', 13: 'Mustard (সরিষা)', 14: 'Okra (ঢেঁড়স)', 15: 'Onion (পেঁয়াজ)',
+            16: 'Papaya (পেঁপে)', 17: 'Potato (আলু)', 18: 'Pumpkin (কুমড়া)', 19: 'Radish (মুলা)',
+            20: 'Rice (ধান)', 21: 'Ridge Gourd (ঝিংগা)', 22: 'Spinach (পালং শাক)', 23: 'Sugarcane (আখ)',
+            24: 'Sweet Gourd (মিষ্টি কুমড়া)', 25: 'Tea (চা)', 26: 'Tomato (টমেটো)', 27: 'Turnip (শালগম)',
+            28: 'Watermelon (তরমুজ)', 29: 'Wheat (গম)'
         }
         
-        # ডিকশনারি থেকে নাম খুঁজে বের করা
         if prediction_id in crop_dict:
             recommended_crop = crop_dict[prediction_id]
         else:
             recommended_crop = f"Unknown Crop (ID: {prediction_id})"
         
-        # রেজাল্ট স্ক্রিনে দেখানো 
+        # ফলাফল স্ক্রিনে দেখানো 
         st.success(f"🌱 আপনার জমির জন্য সবচেয়ে উপযোগী ফসল হলো: **{recommended_crop}**")
         
+        # লাইভ কনফিডেন্স স্কোর প্রোগ্রেস বার আকারে দেখানো
+        st.info(f"🎯 **Prediction Confidence:** {confidence_score:.2f}%")
+        st.progress(int(confidence_score)) 
+        
     except Exception as e:
-        st.error(f"প্রেডিকশনে কোনো সমস্যা হয়েছে: {e}")
+        st.error(f"কোনো সমস্যা হয়েছে: {e}")
+
+# --- ছোট ফুটার (Footer) সেকশন ---
+st.markdown("<br><br><br>", unsafe_allow_html=True) # কিছুটা খালি জায়গা তৈরি করার জন্য
+st.markdown("---")
+st.markdown("<p style='text-align: center; color: gray; font-size: 12px;'>Empowering Smart Agriculture through Machine Learning.</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: gray; font-size: 17px;'>© 2026 Crop Recommendation System | Department of CSE, European University Of Bangladesh</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: gray; font-size: 12px;'>Devloped by Group 7 🌐</p>", unsafe_allow_html=True)
