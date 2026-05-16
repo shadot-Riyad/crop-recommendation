@@ -1,0 +1,89 @@
+import streamlit as st
+import pickle
+import numpy as np
+
+# ১. মডেল লোড করা
+try:
+    with open('crop_recommendation_model.pkl', 'rb') as f:
+        model = pickle.load(f)
+except FileNotFoundError:
+    st.error("Error: 'crop_recommendation_model.pkl' ফাইলটি খুঁজে পাওয়া যায়নি! ফাইলটি আপনার প্রজেক্ট ফোল্ডারে রাখুন।")
+
+# ওয়েবসাইটের ইন্টারফেস ডিজাইন
+st.set_page_config(page_title="Crop Recommendation System", page_icon="🌾", layout="centered")
+
+st.title("🌾 Crop Recommendation System")
+st.write("আপনার মাটির ও আবহাওয়ার উপাদানগুলোর মান স্লাইডারের সাহায্যে সিলেক্ট করুন এবং সঠিক ফসল জেনে নিন।")
+st.markdown("---")
+
+# ২. স্লাইডার তৈরি করা 
+col1, col2 = st.columns(2)
+
+with col1:
+    N = st.slider("Nitrogen (N) - নাইট্রোজেন", min_value=0, max_value=150, value=50)
+    P = st.slider("Phosphorus (P) - ফসফরাস", min_value=5, max_value=150, value=50)
+    K = st.slider("Potassium (K) - পটাশিয়াম", min_value=5, max_value=210, value=50)
+    ph = st.slider("pH Level - মাটির অম্লতা", min_value=3.5, max_value=10.0, value=6.5, step=0.1)
+
+with col2:
+    temperature = st.slider("Temperature (°C) - তাপমাত্রা", min_value=8.0, max_value=45.0, value=25.0, step=0.1)
+    humidity = st.slider("Humidity (%) - আর্দ্রতা", min_value=14.0, max_value=100.0, value=70.0, step=0.1)
+    rainfall = st.slider("Rainfall (mm) - বৃষ্টিপাত", min_value=20.0, max_value=300.0, value=100.0, step=0.1)
+
+st.markdown("---")
+
+# ৩. প্রেডিকশন বাটন এবং আউটপুট
+if st.button("Recommend the Best Crop 🎯", use_container_width=True):
+    try:
+        # ইনপুট ডেটাকে সঠিক ফরমেটে (2D Array) নেওয়া
+        input_data = np.array([[N, P, K, temperature, humidity, ph, rainfall]])
+        
+        # মডেল থেকে প্রেডিকশন নেওয়া
+        prediction = model.predict(input_data)
+        prediction_id = int(prediction[0]) # সংখ্যাটিকে পূর্ণসংখ্যায় রূপান্তর করা হলো
+        
+        # ৪. আপনার আপলোড করা ডেটাসেট অনুযায়ী ১০০% সঠিক ক্রপ ডিকশনারি
+        crop_dict = {
+            0: 'Banana (কলা)',
+            1: 'Barley (বার্লি/যব)',
+            2: 'Bitter Gourd (করলা)',
+            3: 'Brinjal (বেগুন)',
+            4: 'Cabbage (বাধাকপি)',
+            5: 'Cauliflower (ফুলকপি)',
+            6: 'Chili (মরিচ)',
+            7: 'Coriander (ধনেপাতা)',
+            8: 'Garlic (রসুন)',
+            9: 'Ginger (আদা)',
+            10: 'Jute (পাট)',
+            11: 'Lentil (মসুর ডাল)',
+            12: 'Maize (ভুট্টা)',
+            13: 'Mustard (সরিষা)',
+            14: 'Okra (ঢেঁড়স)',
+            15: 'Onion (পেঁয়াজ)',
+            16: 'Papaya (পেঁপে)',
+            17: 'Potato (আলু)',
+            18: 'Pumpkin (কুমড়া)',
+            19: 'Radish (মুলা)',
+            20: 'Rice (ধান)',
+            21: 'Ridge Gourd (ঝিংগা)',
+            22: 'Spinach (পালং শাক)',
+            23: 'Sugarcane (আখ)',
+            24: 'Sweet Gourd (মিষ্টি কুমড়া)',
+            25: 'Tea (চা)',
+            26: 'Tomato (টমেটো)',
+            27: 'Turnip (শালগম)',
+            28: 'Watermelon (তরমুজ)',
+            29: 'Wheat (গম)'
+        }
+        
+        # ডিকশনারি থেকে নাম খুঁজে বের করা
+        if prediction_id in crop_dict:
+            recommended_crop = crop_dict[prediction_id]
+        else:
+            recommended_crop = f"Unknown Crop (ID: {prediction_id})"
+        
+        # রেজাল্ট স্ক্রিনে দেখানো 
+        st.success(f"🌱 আপনার জমির জন্য সবচেয়ে উপযোগী ফসল হলো: **{recommended_crop}**")
+        
+    except Exception as e:
+        st.error(f"প্রেডিকশনে কোনো সমস্যা হয়েছে: {e}")
