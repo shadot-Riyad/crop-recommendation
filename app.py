@@ -88,3 +88,21 @@ st.markdown("---")
 st.markdown("<p style='text-align: center; color: gray; font-size: 12px;'>Empowering Smart Agriculture through Machine Learning.</p>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: gray; font-size: 17px;'>© 2026 Crop Recommendation System | Department of CSE, European University Of Bangladesh</p>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: gray; font-size: 12px;'>Developed by Group 7 🌐</p>", unsafe_allow_html=True)
+
+
+
+
+
+# app.py ফাইলের একদম নিচে ফুটারের আগে এই কোডটুকু যোগ করতে পারেন
+st.markdown("---")
+st.markdown("### 📊 Explainable AI (XAI) - Feature Importance")
+st.write("SHAP (SHapley Additive exPlanations) মডেলের মাধ্যমে কোন উপাদানটি ফসল নির্ধারণে কতটুকু ভূমিকা রাখছে তা নিচে দেখানো হলো:")
+
+try:
+    # গিটহাবে আপলোড করা ইমেজ ফাইলটির নাম এখানে দিন
+    st.image("shap_importance.png", caption="SHAP Global Feature Importance Graph", use_container_width=True)
+except FileNotFoundError:
+    st.warning("SHAP গ্রাফের ছবিটি খুঁজে পাওয়া যায়নি।")
+
+
+
