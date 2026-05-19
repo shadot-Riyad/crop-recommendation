@@ -27,46 +27,34 @@ st.markdown("<p style='text-align: center; color: gray; font-size: 14px; margin-
 st.markdown("<h3 style='text-align: center; color: #4CAF50; margin-top: 0px; margin-bottom: 20px;'>Group 7</h3>", unsafe_allow_html=True)
 
 st.title("🌾 Crop Recommendation System")
-st.write("আপনার মাটির ও আবহাওয়ার উপাদানগুলোর মান স্লাইডার দিয়ে বা সরাসরি বক্সে টাইপ করে সিলেক্ট করুন এবং সঠিক ফসল জেনে নিন।")
+st.write("আপনার মাটির ও আবহাওয়ার উপাদানগুলোর মান স্লাইডারের সাহায্যে সিলেক্ট করুন এবং সঠিক ফসল জেনে নিন।")
 st.markdown("---")
 
-# ২. স্লাইডার এবং সরাসরি ভ্যালু বসানোর ইনপুট বক্স (লিংকড)
+# ২. শুধুমাত্র স্লাইডার তৈরি করা 
 col1, col2 = st.columns(2)
 
 with col1:
     st.markdown("#### **মাটির উপাদান (Soil Attributes)**")
-   #  N_input = st.number_input("Nitrogen (N) - সরাসরি লিখুন", min_value=0, max_value=150, value=50, key="N_num")
-    N = st.slider("Nitrogen (N) - স্লাইডার", min_value=0, max_value=150, value=int(N_input), key="N_slide")
-    
-   #  P_input = st.number_input("Phosphorus (P) - সরাসরি লিখুন", min_value=5, max_value=150, value=50, key="P_num")
-    P = st.slider("Phosphorus (P) - স্লাইডার", min_value=5, max_value=150, value=int(P_input), key="P_slide")
-    
-   #  K_input = st.number_input("Potassium (K) - সরাসরি লিখুন", min_value=5, max_value=210, value=50, key="K_num")
-    K = st.slider("Potassium (K) - স্লাইডার", min_value=5, max_value=210, value=int(K_input), key="K_slide")
-    
-    # ph_input = st.number_input("pH Level - সরাসরি লিখুন", min_value=3.5, max_value=10.0, value=6.5, step=0.1, key="ph_num")
-    ph = st.slider("pH Level - স্লাইডার", min_value=3.5, max_value=10.0, value=float(ph_input), step=0.1, key="ph_slide")
+    N = st.slider("Nitrogen (N) - নাইট্রোজেন", min_value=0, max_value=150, value=50)
+    P = st.slider("Phosphorus (P) - ফসফরাস", min_value=5, max_value=150, value=50)
+    K = st.slider("Potassium (K) - পটাশিয়াম", min_value=5, max_value=210, value=50)
+    ph = st.slider("pH Level - মাটির অম্লতা", min_value=3.5, max_value=10.0, value=6.5, step=0.1)
 
 with col2:
     st.markdown("#### **আবহাওয়ার উপাদান (Environment)**")
-    # temp_input = st.number_input("Temperature (°C) - সরাসরি লিখুন", min_value=8.0, max_value=45.0, value=25.0, step=0.1, key="temp_num")
-    temperature = st.slider("Temperature (°C) - স্লাইডার", min_value=8.0, max_value=45.0, value=float(temp_input), step=0.1, key="temp_slide")
-    
-    # hum_input = st.number_input("Humidity (%) - সরাসরি লিখুন", min_value=14.0, max_value=100.0, value=70.0, step=0.1, key="hum_num")
-    humidity = st.slider("Humidity (%) - স্লাইডার", min_value=14.0, max_value=100.0, value=float(hum_input), step=0.1, key="hum_slide")
-    
-    # rain_input = st.number_input("Rainfall (mm) - সরাসরি লিখুন", min_value=20.0, max_value=300.0, value=100.0, step=0.1, key="rain_num")
-    rainfall = st.slider("Rainfall (mm) - স্লাইডার", min_value=20.0, max_value=300.0, value=float(rain_input), step=0.1, key="rain_slide")
+    temperature = st.slider("Temperature (°C) - তাপমাত্রা", min_value=8.0, max_value=45.0, value=25.0, step=0.1)
+    humidity = st.slider("Humidity (%) - আর্দ্রতা", min_value=14.0, max_value=100.0, value=70.0, step=0.1)
+    rainfall = st.slider("Rainfall (mm) - বৃষ্টিপাত", min_value=20.0, max_value=300.0, value=100.0, step=0.1)
 
 st.markdown("---")
 
 # বাংলা নাম দেখানোর জন্য ডিকশনারি ম্যাপিং
 crop_bangla_dict = {
     'banana': 'Banana (কলা)', 'barley': 'Barley (বার্লি/যব)', 'bitter gourd': 'Bitter Gourd (করলা)', 'brinjal': 'Brinjal (বেগুন)',
-    'cabbage': 'Cabbage (বাধাকপি)', 'cauliflower': 'Cauliflower (ফুলকпи)', 'chili': 'Chili (مরিচ)', 'coriander': 'Coriander (ধনেপাতা)',
+    'cabbage': 'Cabbage (বাধাকপি)', 'cauliflower': 'Cauliflower (ফুলকপি)', 'chili': 'Chili (মরিচ)', 'coriander': 'Coriander (ধনেপাতা)',
     'garlic': 'Garlic (রসুন)', 'ginger': 'Ginger (আদা)', 'jute': 'Jute (পাট)', 'lentil': 'Lentil (মসুর ডাল)',
     'maize': 'Maize (ভুট্টা)', 'mustard': 'Mustard (সরিষা)', 'okra': 'Okra (ঢেঁড়স)', 'onion': 'Onion (পেঁয়াজ)',
-    'papaya': 'Papaya (পেঁপে)', 'potato': 'Potato (আলু)', 'pumpkin': 'Pumpkin (কুমড়া)', 'radish': 'Radish (মুला)',
+    'papaya': 'Papaya (পেঁপে)', 'potato': 'Potato (আলু)', 'pumpkin': 'Pumpkin (কুমড়া)', 'radish': 'Radish (মুলা)',
     'rice': 'Rice (ধান)', 'ridge gourd': 'Ridge Gourd (ঝিংগা)', 'spinach': 'Spinach (পালং শাক)', 'sugarcane': 'Sugarcane (আখ)',
     'sweet gourd': 'Sweet Gourd (মিষ্টি কুমড়া)', 'tea': 'Tea (চা)', 'tomato': 'Tomato (টমেটো)', 'turnip': 'Turnip (শালগম)',
     'watermelon': 'Watermelon (তরমুজ)', 'wheat': 'Wheat (গম)'
@@ -76,8 +64,6 @@ crop_bangla_dict = {
 if st.button("Recommend the Best Crop 🎯", use_container_width=True):
     try:
         raw_input_data = np.array([[N, P, K, temperature, humidity, ph, rainfall]])
-        
-        # ডাটা স্কেল করার আগে ফিচার নেম এর ওয়ার্নিং এড়াতে অ্যাসাইন করা
         scaled_input_data = scaler.transform(raw_input_data)
         
         probabilities = model.predict_proba(scaled_input_data)[0]
