@@ -4,10 +4,10 @@ import numpy as np
 
 # ১. মডেল লোড করা
 try:
-    with open('crop_recommendation_model.pkl', 'rb') as f:
+    with open('best_crop_recommendation_model.pkl', 'rb') as f:
         model = pickle.load(f)
 except FileNotFoundError:
-    st.error("Error: 'crop_recommendation_model.pkl' ফাইলটি খুঁজে পাওয়া যায়নি! ফাইলটি আপনার প্রজেক্ট ফোল্ডারে রাখুন।")
+    st.error("Error: 'best_crop_recommendation_model.pkl' ফাইলটি খুঁজে পাওয়া যায়নি! ফাইলটি আপনার প্রজেক্ট ফোল্ডারে রাখুন।")
 
 # ওয়েবসাইটের ইন্টারফেস ডিজাইন
 st.set_page_config(page_title="Crop Recommendation System", page_icon="🌾", layout="centered")
