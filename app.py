@@ -35,27 +35,27 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.markdown("#### **মাটির উপাদান (Soil Attributes)**")
-    N_input = st.number_input("Nitrogen (N) - সরাসরি লিখুন", min_value=0, max_value=150, value=50, key="N_num")
+   #  N_input = st.number_input("Nitrogen (N) - সরাসরি লিখুন", min_value=0, max_value=150, value=50, key="N_num")
     N = st.slider("Nitrogen (N) - স্লাইডার", min_value=0, max_value=150, value=int(N_input), key="N_slide")
     
-    P_input = st.number_input("Phosphorus (P) - সরাসরি লিখুন", min_value=5, max_value=150, value=50, key="P_num")
+   #  P_input = st.number_input("Phosphorus (P) - সরাসরি লিখুন", min_value=5, max_value=150, value=50, key="P_num")
     P = st.slider("Phosphorus (P) - স্লাইডার", min_value=5, max_value=150, value=int(P_input), key="P_slide")
     
-    K_input = st.number_input("Potassium (K) - সরাসরি লিখুন", min_value=5, max_value=210, value=50, key="K_num")
+   #  K_input = st.number_input("Potassium (K) - সরাসরি লিখুন", min_value=5, max_value=210, value=50, key="K_num")
     K = st.slider("Potassium (K) - স্লাইডার", min_value=5, max_value=210, value=int(K_input), key="K_slide")
     
-    ph_input = st.number_input("pH Level - সরাসরি লিখুন", min_value=3.5, max_value=10.0, value=6.5, step=0.1, key="ph_num")
+    # ph_input = st.number_input("pH Level - সরাসরি লিখুন", min_value=3.5, max_value=10.0, value=6.5, step=0.1, key="ph_num")
     ph = st.slider("pH Level - স্লাইডার", min_value=3.5, max_value=10.0, value=float(ph_input), step=0.1, key="ph_slide")
 
 with col2:
     st.markdown("#### **আবহাওয়ার উপাদান (Environment)**")
-    temp_input = st.number_input("Temperature (°C) - সরাসরি লিখুন", min_value=8.0, max_value=45.0, value=25.0, step=0.1, key="temp_num")
+    # temp_input = st.number_input("Temperature (°C) - সরাসরি লিখুন", min_value=8.0, max_value=45.0, value=25.0, step=0.1, key="temp_num")
     temperature = st.slider("Temperature (°C) - স্লাইডার", min_value=8.0, max_value=45.0, value=float(temp_input), step=0.1, key="temp_slide")
     
-    hum_input = st.number_input("Humidity (%) - সরাসরি লিখুন", min_value=14.0, max_value=100.0, value=70.0, step=0.1, key="hum_num")
+    # hum_input = st.number_input("Humidity (%) - সরাসরি লিখুন", min_value=14.0, max_value=100.0, value=70.0, step=0.1, key="hum_num")
     humidity = st.slider("Humidity (%) - স্লাইডার", min_value=14.0, max_value=100.0, value=float(hum_input), step=0.1, key="hum_slide")
     
-    rain_input = st.number_input("Rainfall (mm) - সরাসরি লিখুন", min_value=20.0, max_value=300.0, value=100.0, step=0.1, key="rain_num")
+    # rain_input = st.number_input("Rainfall (mm) - সরাসরি লিখুন", min_value=20.0, max_value=300.0, value=100.0, step=0.1, key="rain_num")
     rainfall = st.slider("Rainfall (mm) - স্লাইডার", min_value=20.0, max_value=300.0, value=float(rain_input), step=0.1, key="rain_slide")
 
 st.markdown("---")
